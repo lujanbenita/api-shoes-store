@@ -31,7 +31,7 @@ router.get("/", async (req, res) => {
 });
 
 /* POST */ 
-router.post(async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const dbConnect = dbo.getDb();
     const listingQuery = { email : req.body.email, "cartlist.id": req.body.id };
@@ -83,7 +83,7 @@ router.post(async (req, res) => {
 })
 
 /* PUT */ 
-router.put(async (req, res) => {
+router.put("/", async (req, res) => {
   try {
     const dbConnect = dbo.getDb();
 
@@ -109,7 +109,7 @@ router.put(async (req, res) => {
   }
 })
 /* DELETE */ 
-router.delete(async (req, res) => {
+router.delete("/", async (req, res) => {
   try {
     const dbConnect = dbo.getDb();
 

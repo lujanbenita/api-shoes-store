@@ -26,7 +26,7 @@ router.get("/", async (req, res) => {
 });
 
 /* PUT */ 
-router.post(async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const dbConnect = dbo.getDb();
     const listingQuery = { id: req.body.order.id };

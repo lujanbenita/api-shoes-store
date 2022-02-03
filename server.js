@@ -14,18 +14,16 @@ app.use(express.json());
 //app.use(require("./routes/record"));
 
 // routes
-// Rutas
 app.use("/bestsellers", require("./routes/bestSellers"));
 app.use("/cartlist", require("./routes/cartList"));
 app.use("/orders", require("./routes/orders"));
 app.use("/profile", require("./routes/profile"));
 app.use("/wishlist", require("./routes/wishlist"));
 // app.use("/register", require("./router/register"));
-// app.use("/forgot", require("./router/forgot"));
 
 // Global error handling
-app.use(function (err, _req, res) {
-  console.log('res', res);
+app.use(function (err, _req, res, next) {
+  console.log('res Global error handling', res);
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });

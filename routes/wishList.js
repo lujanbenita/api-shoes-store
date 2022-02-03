@@ -1,5 +1,5 @@
-const express = require("express")
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
 // This will help us connect to the database
 const dbo = require("../db/conn");
@@ -8,28 +8,25 @@ const dbo = require("../db/conn");
 router.get("/", async (req, res) => {
   try {
     const dbConnect = dbo.getDb();
-    const email = req.query.email
+    const email = req.query.email;
 
-    let resDoc = dbConnect
-    .collection("wishlist")
-      .findOne({ email })
+    let resDoc = await dbConnect.collection("wishlist").findOne({ email });
 
     if (resDoc !== null) {
-      res.json(resDoc)
+      res.json(resDoc);
     } else {
       res.json({
         email,
-        wishlist:[]
-      })
+        wishlist: [],
+      });
     }
-    
   } catch (error) {
-    console.log(error.response)
+    console.log(error.response);
   }
-})
+});
 
 /* POST */
-router.post(async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const dbConnect = dbo.getDb();
 
@@ -40,8 +37,19 @@ router.post(async (req, res) => {
 
     if (req.body.price === undefined) {
       dbConnect
+        .collection("wishlist")
+        .update(matchDocument, function (err, result) {
+          if (err) {
+            res.status(400).send("Error inserting matches!");
+          } else {
+            console.log(`Added a new match with email ${result}`);
+            res.status(204).send();
+          }
+        });
+    }
+    dbConnect
       .collection("wishlist")
-      .update(matchDocument, function (err, result) {
+      .insertOne(matchDocument, function (err, result) {
         if (err) {
           res.status(400).send("Error inserting matches!");
         } else {
@@ -49,36 +57,25 @@ router.post(async (req, res) => {
           res.status(204).send();
         }
       });
-    }
-    dbConnect
-    .collection("wishlist")
-    .insertOne(matchDocument, function (err, result) {
-      if (err) {
-        res.status(400).send("Error inserting matches!");
-      } else {
-        console.log(`Added a new match with email ${result}`);
-        res.status(204).send();
-      }
-    });
-    
   } catch (error) {
-    console.log(error.response)
+    console.log(error.response);
   }
-})
+});
 
-router.delete(async (req, res) => {
+router.delete("/", async (req, res) => {
   try {
     const dbConnect = dbo.getDb();
 
-    let data = JSON.parse(req.body)
-    const {id, email} = data
-    
-    let doc = await dbConnect.collection('wishlist').update({ email}, { $pull: { wishlist: { id }}})
-    res.json(doc)
+    let data = JSON.parse(req.body);
+    const { id, email } = data;
 
+    let doc = await dbConnect
+      .collection("wishlist")
+      .update({ email }, { $pull: { wishlist: { id } } });
+    res.json(doc);
   } catch (error) {
-    console.log(error.response)
+    console.log(error.response);
   }
-})
+});
 
 module.exports = router;
