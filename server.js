@@ -19,6 +19,7 @@ app.use(express.json());
 
 
 // routes
+app.get('/', (req, res) => res.send('Server on!!!'));
 app.use("/bestsellers", require("./routes/bestSellers"));
 app.use("/cartlist", require("./routes/cartList"));
 app.use("/orders", require("./routes/orders"));
