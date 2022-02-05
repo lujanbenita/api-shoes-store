@@ -25,7 +25,6 @@ app.use("/cartlist", require("./routes/cartList"));
 app.use("/orders", require("./routes/orders"));
 app.use("/profile", require("./routes/profile"));
 app.use("/wishlist", require("./routes/wishlist"));
-// app.use("/register", require("./router/register"));
 
 // Global error handling
 app.use(function (err, _req, res, next) {
