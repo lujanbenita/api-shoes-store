@@ -2,16 +2,21 @@
 require("dotenv").config({ path: "./config.env" });
 
 const express = require("express");
+const bodyParser = require("body-parser");
 const cors = require("cors");
+
 // get MongoDB driver connection
 const dbo = require("./db/conn");
 
 const PORT = process.env.PORT || 5000;
 const app = express();
 
+// Capturar body
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
-//app.use(require("./routes/record"));
+
 
 // routes
 app.use("/bestsellers", require("./routes/bestSellers"));

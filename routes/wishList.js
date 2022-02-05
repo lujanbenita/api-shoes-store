@@ -27,7 +27,31 @@ router.get("/", async (req, res) => {
 
 /* POST */
 router.post("/", async (req, res) => {
-  try {
+    const dbConnect = dbo.getDb();
+
+    console.log('req.body', req.body);
+    console.log('req.params', req.params);
+    console.log('req.query', req.query);
+    let shoe = req.body
+    // shoe = JSON.parse(shoe)
+    let email = shoe.email
+    delete shoe.email
+    
+    if (shoe.price === undefined) {
+      let doc = await dbConnect.collection('wishlist').updateOne({ email }, {$pull: {wishlist: {id: shoe.id}}})
+      res.json(doc)
+    } else {
+      let doc = await dbConnect.collection('wishlist').updateOne({ email }, {$push: {wishlist: shoe}})
+      if (doc.result.nModified === 0) {
+        let insert = await dbConnect.collection('wishlist').insertOne({ email, wishlist: [shoe] })
+        res.json(insert)
+      } else {
+        res.json(doc)
+      }
+    }
+
+
+  /* try {
     const dbConnect = dbo.getDb();
 
     const matchDocument = {
@@ -59,7 +83,7 @@ router.post("/", async (req, res) => {
       });
   } catch (error) {
     console.log(error.response);
-  }
+  } */
 });
 
 router.delete("/", async (req, res) => {
