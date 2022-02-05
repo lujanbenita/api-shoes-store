@@ -27,13 +27,9 @@ router.get("/", async (req, res) => {
 
 /* POST */
 router.post("/", async (req, res) => {
+  try {
     const dbConnect = dbo.getDb();
-
-    console.log('req.body', req.body);
-    console.log('req.params', req.params);
-    console.log('req.query', req.query);
     let shoe = req.body
-    // shoe = JSON.parse(shoe)
     let email = shoe.email
     delete shoe.email
     
@@ -49,53 +45,22 @@ router.post("/", async (req, res) => {
         res.json(doc)
       }
     }
+     } catch (error) {
+    console.log(error)
+  }
 
-
-  /* try {
-    const dbConnect = dbo.getDb();
-
-    const matchDocument = {
-      email: req.body.email,
-      // last_modified: new Date(),
-    };
-
-    if (req.body.price === undefined) {
-      dbConnect
-        .collection("wishlist")
-        .update(matchDocument, function (err, result) {
-          if (err) {
-            res.status(400).send("Error inserting matches!");
-          } else {
-            console.log(`Added a new match with email ${result}`);
-            res.status(204).send();
-          }
-        });
-    }
-    dbConnect
-      .collection("wishlist")
-      .insertOne(matchDocument, function (err, result) {
-        if (err) {
-          res.status(400).send("Error inserting matches!");
-        } else {
-          console.log(`Added a new match with email ${result}`);
-          res.status(204).send();
-        }
-      });
-  } catch (error) {
-    console.log(error.response);
-  } */
 });
 
 router.delete("/", async (req, res) => {
   try {
     const dbConnect = dbo.getDb();
 
-    let data = JSON.parse(req.body);
-    const { id, email } = data;
+    const id = Number(req.query.id)
+    const email = req.query.email
 
     let doc = await dbConnect
       .collection("wishlist")
-      .update({ email }, { $pull: { wishlist: { id } } });
+      .updateOne({ email }, { $pull: { wishlist: { id } } });
     res.json(doc);
   } catch (error) {
     console.log(error.response);

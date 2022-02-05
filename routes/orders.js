@@ -27,28 +27,16 @@ router.get("/", async (req, res) => {
 
 /* POST */
 router.post("/", async (req, res) => {
-  try {
+
     const dbConnect = dbo.getDb();
+    let order = req.body
 
-    const matchDocument = {
-      email: req.body.email,
-      order: req.body,
-      last_modified: new Date(),
-    };
+    let email = order.email
+    delete order.email
 
-    dbConnect
-      .collection("orders")
-      .insertOne(matchDocument, function (err, result) {
-        if (err) {
-          res.status(400).send("Error inserting matches!");
-        } else {
-          console.log(`Added a new match with email ${result}`);
-          res.status(204).send();
-        }
-      });
-  } catch (error) {
-    console.log(error.response);
-  }
+    let doc = await dbConnect.collection('orders').insertOne({email, order})
+    res.json(doc)
+ 
 });
 
 module.exports = router;

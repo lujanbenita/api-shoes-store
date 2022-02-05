@@ -27,28 +27,12 @@ router.get("/", async (req, res) => {
 
 /* PUT */ 
 router.post("/", async (req, res) => {
-  try {
-    const dbConnect = dbo.getDb();
-    const listingQuery = { id: req.body.order.id };
-    const updates = {
-      $inc: {
-        quantity: req.body.order.quantity
-      }
-    };
+  const dbConnect = dbo.getDb();
+    let order = req.body
 
-    dbConnect
-    .collection("bestSellers")
-    .updateOne(listingQuery, updates, function (err, _result) {
-      if (err) {
-        res.status(400).send(`Error updating likes on listing with id ${listingQuery.id}!`);
-      } else {
-        console.log("1 document updated");
-      }
-    });
+    let doc = dbConnect.collection('bestSellers').updateOne({ id: order.id }, { $inc: { "quantity": order.quantity }})
+    res.json(doc)
 
-  } catch (error) {
-    console.log(error.response)
-  }
 })
 
 module.exports = router;
