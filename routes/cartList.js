@@ -18,23 +18,6 @@ router.get("/", async (req, res) => {
     res.json(doc)
   }
 
-   /*  dbConnect
-    .collection("cart")
-    .find({email}).limit(50)
-    .toArray(function (err, result) {
-      if (err) {
-        console.log('err IF', err);
-        res.status(400).send("Error fetching listings!");
-      } 
-      if (result !== []) {
-        res.json(result);
-      }
-    });
-
-    const insert = dbConnect.collection("cart").insertOne({ email, cartlist: [] })
-    res.json(insert) */
-
-
 });
 
 /* POST */ 
@@ -62,56 +45,6 @@ router.post("/", async (req, res) => {
     console.log(error)
   }
 
-  /* try {
-    const dbConnect = dbo.getDb();
-    const listingQuery = { email : req.body.email, "cartlist.id": req.body.id };
-    const updates = {
-      $set: {
-        "cartlist.$.quantity": req.body.quantity
-      }
-    };
-
-    if (req.body?.exist) {
-      dbConnect
-      .collection("cart")
-      .updateOne(listingQuery, updates, function (err, _result) {
-        if (err) {
-          res.status(400).send(`Error updating likes on listing with email ${listingQuery.email}!`);
-        } else {
-          console.log("1 document updated");
-        }
-      });
-      return
-    }
-
-    if (req.body.isNeew) {
-      dbConnect
-      .collection("cart")
-      .insertOne({email: req.body.email, cartlist: []}, function (err, _result) {
-        if (err) {
-          res.status(400).send(`Error updating likes on listing with email ${req.body}!`);
-        } else {
-          console.log("1 document insert");
-          res.status(200).json("ok")
-        }
-      });
-      return
-    }
-
-    dbConnect
-      .collection("cart")
-      .update({email: req.body.email}, {$push: {cartlist: req.body}}, function (err, _result) {
-        if (err) {
-          res.status(400).send(`Error updating likes on listing with email ${req.body}!`);
-        } else {
-          console.log("1 document insert");
-          res.status(200).json("ok")
-        }
-      });
-
-  } catch (error) {
-    console.log(error.response)
-  } */
 })
 
 /* PUT */ 
@@ -144,7 +77,6 @@ router.put("/", async (req, res) => {
 
 /* DELETE */ 
 router.delete("/", async (req, res) => {
-  //try {
   const dbConnect = dbo.getDb();
 
   let shoeId = Number(req.query.id)
