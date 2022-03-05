@@ -1,0 +1,5 @@
+FROM node:16
+WORKDIR /
+COPY . /
+
+EXPOSE $PORT

@@ -1,6 +1,6 @@
 
 const { MongoClient } = require("mongodb");
-const connectionString = process.env.ATLAS_URI;
+const connectionString = 'mongodb://root:pass12345@host.docker.internal:27017';
 const client = new MongoClient(connectionString, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
