@@ -29,7 +29,7 @@ app.use("/wishlist", require("./routes/wishList"));
 // Global error handling
 app.use(function (err, _req, res, next) {
   console.log('res Global error handling', /*res*/);
-   console.error(err.stack);
+  console.error(err.stack);
   res.status(500).send('Something broke!');
 });
 
